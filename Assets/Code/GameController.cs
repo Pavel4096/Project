@@ -11,7 +11,7 @@ namespace Project
         private List<IInteractiveItem> interactiveItems;
         private IPlayerController currentController;
 
-        private event System.Action<float> gameLoop;
+        public event System.Action<float> gameLoop;
 
         public GameController(Game gameView)
         {
