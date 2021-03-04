@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace Project
 {
-    public class GameController : UnityEngine.Object
+    public class GameController : UnityEngine.Object, IDisposable
     {
         private Game gameView;
         private List<IController> controllers;
         private List<IInteractiveItem> interactiveItems;
         private IPlayerController currentController;
+        private bool gameActive;
 
         public event System.Action<float> gameLoop;
 
@@ -26,6 +27,9 @@ namespace Project
             this.gameView = gameView;
             charView = gameView.CreateView(charModel.viewName);
             this.currentController = new CharController(charModel, charView);
+            gameLoop += this.currentController.GameLoop;
+            if(currentController is IGameEnder gameEnder)
+                gameEnder.OnGameEnded += EndGame;
 
             cameraController = new CameraController(cameraModel, gameView.CreateView(cameraModel.viewName), charView);
             gameLoop += cameraController.GameLoop;
@@ -38,16 +42,41 @@ namespace Project
                 IInteractiveItem item = new Damager(model, gameView.CreateView(model.viewName, model.position));
                 this.interactiveItems.Add(item);
             }
+
+            for(var i = 0; i < 8; i++)
+            {
+                ItemModel model = new ItemModel(0.5f, new GameVector(rnd.Next(-800, 801)/100.0f, 0.0f, rnd.Next(-800, 801)/100.0f));
+                IInteractiveItem item = new Item(model, gameView.CreateView(model.viewName, model.position));
+                this.interactiveItems.Add(item);
+            }
+            gameActive = true;
         }
 
         public void GameLoop(UserInput userInput, float frameTime)
         {
-            currentController.ProcessInput(userInput);
-            gameLoop?.Invoke(frameTime);
-            foreach(IInteractiveItem item in interactiveItems)
+            if(gameActive)
             {
-                item.Check(currentController, frameTime);
+                currentController.ProcessInput(userInput);
+                gameLoop?.Invoke(frameTime);
+                foreach(IInteractiveItem item in interactiveItems)
+                {
+                    item.Check(currentController, frameTime);
+                }
             }
+        }
+
+        private void EndGame(GameEndReason reason, int collectedItemsCount)
+        {
+            gameActive = false;
+            if(currentController is IGameEnder gameEnder)
+                gameEnder.OnGameEnded -= EndGame;
+            currentController.Dispose();
+        }
+
+        public void Dispose()
+        {
+            foreach(IController controller in controllers)
+                gameLoop -= controller.GameLoop;
         }
     }
 }
