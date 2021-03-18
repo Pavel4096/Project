@@ -43,6 +43,11 @@ namespace Project
             return view.GetPosition();
         }
 
+        public float GetYAngle()
+        {
+            return view.GetYAngle();
+        }
+
         public void Damage(DamageType type, float value)
         {
             currentHealth -= value;
@@ -61,10 +66,6 @@ namespace Project
             {
                 OnGameEnded?.Invoke(GameEndReason.ItemsCollected, collectedItemsCount);
             }
-        }
-
-        public void GameLoop(float time)
-        {
         }
 
         public void Dispose()

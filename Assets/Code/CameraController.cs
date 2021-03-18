@@ -2,7 +2,7 @@
 
 namespace Project
 {
-    public class CameraController : IController
+    public class CameraController : IController, IGameLoop
     {
         private CameraModel model;
         private IView view;

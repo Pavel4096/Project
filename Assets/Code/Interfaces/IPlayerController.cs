@@ -2,11 +2,10 @@
 
 namespace Project
 {
-    public interface IPlayerController : IController, IDisposable
+    public interface IPlayerController : IController, ICanReturnPosition, IDisposable
     {
         void ProcessInput(UserInput userInput);
         void Damage(DamageType type, float value);
         void AddItem();
-        GameVector GetPosition();
     }
 }

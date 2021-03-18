@@ -14,6 +14,11 @@ namespace Project
             Debug.Log(message);
         }
 
+        public IGameController GameController
+        {
+            get => (IGameController) gameController;
+        }
+
         public IView CreateView(string name, GameVector position = new GameVector())
         {
             GameObject go = Resources.Load<GameObject>(name);
@@ -26,9 +31,15 @@ namespace Project
             return view;
         }
 
+        public void ProcessWaiter(IEnumerator enumerator, Waiter waiter)
+        {
+
+        }
+
         private void Awake()
         {
             gameController = new GameController(this);
+            gameController.Init();
             //Object.DontDestroyOnLoad(gameObject);
         }
 

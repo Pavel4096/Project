@@ -2,7 +2,7 @@
 
 namespace Project
 {
-    public sealed class Item : IInteractiveItem
+    public sealed class Item : IController, ICanReturnPosition, IInteractiveItem
     {
         private ItemModel model;
         private IView view;
@@ -11,6 +11,16 @@ namespace Project
         {
             this.model = model;
             this.view = view;
+        }
+
+        public GameVector GetPosition()
+        {
+            return view.GetPosition();
+        }
+
+        public float GetYAngle()
+        {
+            return view.GetYAngle();
         }
 
         public void Check(IPlayerController player, float time)
