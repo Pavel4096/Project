@@ -2,7 +2,8 @@
 {
     public enum WaitReason
     {
-        EndOfFrame = 0,
-        Time = 1
+        None = 0,
+        EndOfFrame = 1,
+        Time = 2
     }
 }
