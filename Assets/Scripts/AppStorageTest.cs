@@ -8,11 +8,12 @@ namespace Project
     {
         private void Start()
         {
+            AppStorage storage = new AppStorage("data.xml");
             float value = 0;
-            if(AppStorage.KeyExists("someValue"))
-                value = AppStorage.GetFloat("someValue");
+            if(storage.KeyExists("someValue"))
+                value = storage.GetFloat("someValue");
             value += 1.5f;
-            AppStorage.AddFloat("someValue", value);
+            storage.AddFloat("someValue", value);
         }
     }
 }

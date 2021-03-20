@@ -8,21 +8,23 @@ namespace Project
 {
     public sealed class AppStorage
     {
-        private static Dictionary<string, Entry> dict;
+        private Dictionary<string, Entry> dict;
+        private string filename;
 
-        static AppStorage()
+        public AppStorage(string filename_)
         {
+            filename = filename_;
             Application.quitting += Save;
             dict = new Dictionary<string, Entry>();
             Load();
         }
 
-        public static bool KeyExists(string name)
+        public bool KeyExists(string name)
         {
             return dict.ContainsKey(name);
         }
 
-        public static void AddEntry(string name, object data)
+        public void AddEntry(string name, object data)
         {
             EntryType type = EntryType.Unknown;
 
@@ -38,7 +40,7 @@ namespace Project
             dict[name] = new Entry(name, type, data);
         }
 
-        public static object GetEntry(string name)
+        public object GetEntry(string name)
         {
             Entry entry;
 
@@ -50,12 +52,12 @@ namespace Project
                 throw new KeyNotFoundException($"There is no element with name: \"{name}\".");
         }
 
-        public static void AddFloat(string name, float data)
+        public void AddFloat(string name, float data)
         {
             AddEntry(name, data);
         }
 
-        public static float GetFloat(string name)
+        public float GetFloat(string name)
         {
             Entry entry;
 
@@ -70,9 +72,9 @@ namespace Project
                 throw new KeyNotFoundException($"There is no element with name: \"{name}\".");
         }
 
-        public static void Save()
+        public void Save()
         {
-            using(var fs = new FileStream(Path.Combine(Application.persistentDataPath, "data.xml"), FileMode.Create, FileAccess.Write))
+            using(var fs = new FileStream(Path.Combine(Application.persistentDataPath, filename), FileMode.Create, FileAccess.Write))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(List<Entry>));
                 List<Entry> list = new List<Entry>();
@@ -85,11 +87,11 @@ namespace Project
             }
         }
 
-        public static void Load()
+        public void Load()
         {
             try
             {
-                using(var fs = new FileStream(Path.Combine(Application.persistentDataPath, "data.xml"), FileMode.Open, FileAccess.Read))
+                using(var fs = new FileStream(Path.Combine(Application.persistentDataPath, filename), FileMode.Open, FileAccess.Read))
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(List<Entry>));
                     List<Entry> list = serializer.Deserialize(fs) as List<Entry>;
