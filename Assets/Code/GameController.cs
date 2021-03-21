@@ -12,6 +12,7 @@ namespace Project
         private IPlayerController currentController;
         private bool gameActive;
         private RadarController radar;
+        private ItemRepository itemRepository;
 
         private Queue<GameRoutine> endOfFrameRoutines;
         private Queue<GameRoutine> timeRoutines;
@@ -55,12 +56,15 @@ namespace Project
                 interactiveItems.Add(item);
             }
 
+            itemRepository = new ItemRepository("data");
+
             for(var i = 0; i < 8; i++)
             {
                 ItemModel model = new ItemModel(0.5f, new GameVector(rnd.Next(-800, 801)/100.0f, 0.0f, rnd.Next(-800, 801)/100.0f));
                 IInteractiveItem item = new Item(model, gameView.CreateView(model.viewName, model.position));
                 AddController(item as IController);
                 interactiveItems.Add(item);
+                itemRepository.Save("item" + i, item as Item);
             }
             radar = (new ControllerFactory<RadarController, RadarModel>(new RadarModel(), gameView)).Controller;
             gameActive = true;

@@ -31,5 +31,24 @@ namespace Project
                 model.active = false;
             }
         }
+
+        public ItemSavedData GetSavedData()
+        {
+            var savedData = new ItemSavedData();
+
+            savedData.active = model.active;
+            savedData.radius = model.radius;
+            savedData.position = model.position;
+
+            return savedData;
+        }
+
+        public void LoadSavedData(ItemSavedData data)
+        {
+            model.active = data.active;
+            model.radius = data.radius;
+            model.position = data.position;
+            view.SetPosition(model.position);
+        }
     }
 }

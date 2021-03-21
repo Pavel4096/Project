@@ -2,6 +2,7 @@
 
 namespace Project
 {
+    [Serializable]
     public struct GameVector
     {
         public float x;
