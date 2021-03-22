@@ -20,8 +20,10 @@ public class BonusesEditor : Editor
             Camera camera = SceneView.currentDrawingSceneView.camera;
             Vector2 position = Event.current.mousePosition;
 
-            position.x = position.x/0.7954f;
-            position.y = position.y/0.7885f;
+            //position.x = position.x/0.7954f;
+            //position.y = position.y/0.7885f;
+            position.x = position.x*1.25f;
+            position.y = position.y*1.25f;
             Debug.Log(position + " / " + camera.pixelWidth + "x" + camera.pixelHeight);
             Debug.Log(Event.current.mousePosition + " / " + camera.pixelWidth + "x" + camera.pixelHeight);
 
