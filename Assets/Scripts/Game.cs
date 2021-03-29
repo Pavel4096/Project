@@ -9,9 +9,11 @@ namespace Project
     {
         private GameController gameController;
 
-        public void Log<T>(T message) where T: struct
+        public event System.Action FrameEnded;
+
+        public IGameController GameController
         {
-            Debug.Log(message);
+            get => (IGameController) gameController;
         }
 
         public IView CreateView(string name, GameVector position = new GameVector())
@@ -26,16 +28,33 @@ namespace Project
             return view;
         }
 
+        public void ProcessWaiter(GameRoutine routine)
+        {
+            gameController.ProcessWaiter(routine);
+        }
+
+        private IEnumerator ProcessGameRoutines()
+        {
+            while(true)
+            {
+                yield return new WaitForEndOfFrame();
+                FrameEnded?.Invoke();
+            }
+        }
+
         private void Awake()
         {
+            StartCoroutine(ProcessGameRoutines());
             gameController = new GameController(this);
+            gameController.Init();
             //Object.DontDestroyOnLoad(gameObject);
         }
 
         private void Update()
         {
+            float frameTime = Time.deltaTime;
             UserInput userInput = new UserInput(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal"), Input.GetButton("Fire1"));
-            gameController.GameLoop(userInput, Time.deltaTime);
+            gameController.GameLoop(userInput, frameTime);
         }
     }
 }

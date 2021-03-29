@@ -2,7 +2,7 @@
 
 namespace Project
 {
-    public class Damager : IInteractiveItem
+    public class Damager : IController, IInteractiveItem
     {
         private DamagerModel model;
         private IView view;

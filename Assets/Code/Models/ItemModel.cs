@@ -2,6 +2,7 @@
 
 namespace Project
 {
+    [Serializable]
     public class ItemModel
     {
         public bool active;
