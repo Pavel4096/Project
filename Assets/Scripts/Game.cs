@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Project
 {
@@ -28,7 +29,7 @@ namespace Project
         private void Awake()
         {
             gameController = new GameController(this);
-            Object.DontDestroyOnLoad(gameObject);
+            //Object.DontDestroyOnLoad(gameObject);
         }
 
         private void Update()
