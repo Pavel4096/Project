@@ -2,6 +2,6 @@
 {
     public interface IController
     {
-        void GameLoop(float time);
+        //void GameLoop(float time);
     }
 }

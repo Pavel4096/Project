@@ -16,10 +16,13 @@ namespace Project
             return new GameVector(position.x, position.y, position.z);
         }
 
+        public float GetYAngle()
+        {
+            return viewTransform.eulerAngles.y;
+        }
+
         public void SetPosition(GameVector position)
         {
-    if(viewTransform == null)
-        UnityEngine.Debug.Log("viewTransform is null. " + gameObject.name);
             viewTransform.position = new Vector3(position.x, position.y, position.z);
         }
 
