@@ -13,10 +13,10 @@ namespace Project
             this.view = view;
         }
 
-        public void Check(IPlayerController player, float time)
+        public void Check((IPlayerController player, float time) data)
         {
-            if(model.position.DistanceTo(player.GetPosition()) < model.radius)
-                player.Damage(DamageType.Damager, model.damage*time);
+            if(model.position.DistanceTo(data.player.GetPosition()) < model.radius)
+                data.player.Damage(DamageType.Damager, model.damage*data.time);
         }
     }
 }
