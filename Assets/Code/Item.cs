@@ -23,11 +23,11 @@ namespace Project
             return view.GetYAngle();
         }
 
-        public void Check(IPlayerController player, float time)
+        public void Check((IPlayerController player, float time) data)
         {
-            if(model.active && model.position.DistanceTo(player.GetPosition()) < model.radius)
+            if(model.active && model.position.DistanceTo(data.player.GetPosition()) < model.radius)
             {
-                player.AddItem();
+                data.player.AddItem();
                 model.active = false;
             }
         }

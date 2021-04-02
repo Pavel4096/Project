@@ -130,7 +130,7 @@ namespace Project
                 gameLoop?.Invoke(frameTime);
                 foreach(IInteractiveItem item in interactiveItems)
                 {
-                    item.Check(currentController, frameTime);
+                    item.Check( (currentController, frameTime) );
                 }
             }
         }
